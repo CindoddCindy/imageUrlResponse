@@ -41,15 +41,20 @@ public class FileController {
                 collect(Collectors.toList());
     }
 
-    @GetMapping("/download/{fileName}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
-        FileModel model = fileService.getFile(fileName);
+    @GetMapping("/download/{id}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String id) {
+        FileModel model = fileService.getFile(id);
         return ResponseEntity.ok().
                 header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + model.getFileName() + "\"").
+                //body(new ByteArrayResource(model.getFileData()));
                 body(new ByteArrayResource(model.getFileData()));
 
 
+
+
+
     }
+
 
     @GetMapping("/files/{id}")
     public ResponseEntity<byte[]> getFiles(@PathVariable String id) {
@@ -59,6 +64,21 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getFileName() + "\"")
                 .body(fileDB.getFileData());
     }
+
+/*
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        final ByteArrayHttpMessageConverter arrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
+        final List<MediaType> list = new ArrayList<>();
+        list.add(MediaType.IMAGE_JPEG);
+        list.add(MediaType.APPLICATION_OCTET_STREAM);
+        arrayHttpMessageConverter.setSupportedMediaTypes(list);
+        converters.add(arrayHttpMessageConverter);
+
+        super.configureMessageConverters(converters);
+    }
+
+ */
 
 
     @GetMapping("/Allfiles")

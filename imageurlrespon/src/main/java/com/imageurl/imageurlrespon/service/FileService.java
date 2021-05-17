@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FileService {
@@ -38,9 +39,9 @@ public class FileService {
 
     }
 
-    public FileModel getFile(String fileName) {
+    public FileModel getFile(String id) {
 
-        return fileRepo.findByName(fileName).orElseThrow(() -> new FileNotFoundException(FileErrors.FILE_NOT_FOUND + fileName));
+        return fileRepo.findById(id).orElseThrow(() -> new FileNotFoundException(FileErrors.FILE_NOT_FOUND + id));
     }
 
     public FileModel getFiles(String id) {
@@ -51,4 +52,7 @@ public class FileService {
 
         return fileRepo.findAll();
     }
+
+
+
 }

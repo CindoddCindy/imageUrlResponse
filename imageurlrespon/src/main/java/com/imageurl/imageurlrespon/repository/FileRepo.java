@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface FileRepo extends JpaRepository<FileModel, String>{
 
-    Optional<FileModel> findByName(String fileName);
+
 }
