@@ -41,9 +41,9 @@ public class FileController {
                 collect(Collectors.toList());
     }
 
-    @GetMapping("/download/{fileName}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
-        FileModel model = fileService.getFile(fileName);
+    @GetMapping("/download/{id}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String id) {
+        FileModel model = fileService.getFile(id);
         return ResponseEntity.ok().
                 header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + model.getFileName() + "\"").
                 body(new ByteArrayResource(model.getFileData()));
