@@ -30,7 +30,7 @@ public class FileController {
         FileModel model = fileService.saveFile(file);
         String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").
                 path(model.getFileId()).toUriString();
-        return new FileResponse(model.getFileName(), model.getFileType(), fileUri);
+        return new FileResponse(model.getFileName(), model.getFileId(), model.getFileType(), fileUri);
     }
 
     @PostMapping("/UploadMultipleFiles")
@@ -41,14 +41,23 @@ public class FileController {
                 collect(Collectors.toList());
     }
 
-    @GetMapping("/download/{id}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String id) {
-        FileModel model = fileService.getFile(id);
+    @GetMapping("/download/{fileName}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
+        FileModel model = fileService.getFile(fileName);
         return ResponseEntity.ok().
                 header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + model.getFileName() + "\"").
                 body(new ByteArrayResource(model.getFileData()));
 
 
+    }
+
+    @GetMapping("/files/{id}")
+    public ResponseEntity<byte[]> getFiles(@PathVariable String id) {
+        FileModel fileDB = fileService.getFiles(id);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getFileName() + "\"")
+                .body(fileDB.getFileData());
     }
 
 

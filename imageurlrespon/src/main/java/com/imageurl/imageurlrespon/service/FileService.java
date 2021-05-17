@@ -38,9 +38,13 @@ public class FileService {
 
     }
 
-    public FileModel getFile(String fileId) {
+    public FileModel getFile(String fileName) {
 
-        return fileRepo.findById(fileId).orElseThrow(() -> new FileNotFoundException(FileErrors.FILE_NOT_FOUND + fileId));
+        return fileRepo.findByName(fileName).orElseThrow(() -> new FileNotFoundException(FileErrors.FILE_NOT_FOUND + fileName));
+    }
+
+    public FileModel getFiles(String id) {
+        return fileRepo.findById(id).get();
     }
 
     public List<FileModel> getListOfFiles(){
